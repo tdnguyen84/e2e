@@ -1,0 +1,40 @@
+package utilities;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+
+public class setup {
+	//The WEB DRIVER
+	public static WebDriver _webdriver;
+	
+	public static String _testsite = "https://canary.anduintransact.com/";
+	
+	//Default value for local testing
+	public static String _browserName = browser.Chrome.Name;
+
+	
+	public static void initWebDriver () {
+		System.setProperty("webdriver.chrome.driver", "/libs/chromedriver.bat");
+		switch(_browserName) {
+			case browser.Firefox.Name:
+				_webdriver = new FirefoxDriver();
+				break;
+			case browser.Chrome.Name:
+				_webdriver = new ChromeDriver();
+		}
+	}
+	
+	public static void setUp() {
+		initWebDriver();
+		_webdriver.manage().window().maximize();
+		commonFunctions.gotoUrl(_testsite);
+	}
+	
+	public static void tearDown() {
+		//We can define logOut function at here
+		_webdriver.close();
+	}
+	
+}

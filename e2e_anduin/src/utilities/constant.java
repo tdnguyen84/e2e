@@ -17,6 +17,7 @@ public class constant {
 	public static class globalVariables {
 		public static final String testUser = "qaanduin+leadinvestor@gmail.com";
 		public static final String testCompanyuser = "qaanduin1+company@gmail.com";
+		public static final String testBMuser = "qaanduin+boardmember@gmail.com";
 		public static final String testPass = "anduin1808";
 		public static final String orgInvestorType = "Investor";
 		public static final String orgCompanyType = "Company";
@@ -42,6 +43,11 @@ public class constant {
 		public static final String trxnSeed = "Seed";
 		public static final String trxnLinkName = testCompanyName + "'s " + trxnNoteType + " from " + testShortName;
 		
+		public static String consentRequestName = "Employee Option Pool " + commonFunctions.getCurrentTimeStamp();
+		public static final String uploadConsentFileName = "upload_example_doc.docx";
+		
+		public static final String consentGeneralMsg = "Genreal message here";
+		public static final String consentPrivateMsg = "Private message here";
 		
 	}
 	

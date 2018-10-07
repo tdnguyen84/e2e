@@ -5,6 +5,7 @@ import static org.testng.Assert.assertEquals;
 import pageObjects.Login;
 import pageObjects.Toolkit;
 import pageObjects.Toolkit_DilutionCalculator;
+import utilities.Log;
 import utilities.commonFunctions;
 import utilities.constant;
 import utilities.setup;
@@ -12,7 +13,6 @@ import utilities.setup;
 public class dilutionCalculator {
 
 	public static void Execute() {
-		setup.setUp();
 		
 		Login.signIn(constant.globalVariables.testCompanyuser, constant.globalVariables.testPass);
 		Toolkit.dilutionCalculator().click();
@@ -47,7 +47,6 @@ public class dilutionCalculator {
 		assertEquals(Toolkit_DilutionCalculator.txtSeries().getText(), "$6.9 / share");
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[text()='Founders will be diluted by: '][span='37.3%']").isDisplayed(), true);
 		
-		setup.tearDown();
 		
 		
 	}

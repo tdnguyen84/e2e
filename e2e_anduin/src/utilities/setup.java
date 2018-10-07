@@ -11,8 +11,8 @@ public class setup {
 	public static WebDriver _webdriver;
 	
 	//public static String _testsite = "http://localhost:8080";
-	//public static String _testsite = "https://canary.anduintransact.com";
-	public static String _testsite = "https://gondor-internal.anduintransact.com";
+	public static String _testsite = "https://canary.anduintransact.com";
+//	public static String _testsite = "https://gondor-internal.anduintransact.com";
 //	public static String _testsite = "https://deals.anduintransact.com";
 	
 	//Default value for local testing

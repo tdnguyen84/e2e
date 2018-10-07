@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.sun.jmx.snmp.Timestamp;
 
 import pageObjects.Board_Consent;
+import pageObjects.Login;
 
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -254,5 +255,15 @@ public class commonFunctions {
 	public static String getCurrentTimeStamp() {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		return String.valueOf(timestamp.getDateTime());
+	}
+	
+	public static void logOut(boolean isDirectly) {
+		if(isDirectly) {
+			String logoutURL = setup._testsite + "/#/logout";
+			commonFunctions.gotoUrl(logoutURL);
+		} else {
+			Login.profileAvatar().click();
+			commonFunctions.getElement(constant.How.XPATH, "//span[text()='Log out']").click();
+		}
 	}
 }

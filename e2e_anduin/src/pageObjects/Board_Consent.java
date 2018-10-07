@@ -129,7 +129,118 @@ public class Board_Consent {
 		return commonFunctions.getElement(constant.How.XPATH, "//a/div/p[text()='Test Anduin']");
 	}
 	
-	public static void createRquest(String requestName, String requestType, Integer selectedDay) throws AWTException {
+	public static WebElement attachedDocName(String docName) {
+		return commonFunctions.getElement(constant.How.XPATH, "//span[@class='ml2'][text()='"+docName+"']");
+	}
+	
+	public static WebElement labelSignatureRequired() {
+		return commonFunctions.getElement(constant.How.XPATH, "//div/span[text()='Signature required']");
+	}
+	
+	public static WebElement btRemoveAddedMember() {
+		return commonFunctions.getElement(constant.How.XPATH, "//div[@class='ml2 flex items-start']/button");
+	}
+	
+	
+	
+	
+	
+	public static class BMView {
+		public static WebElement btView(String requestName) {
+			return commonFunctions.getElement(constant.How.XPATH, "//tr[td/div='"+requestName+"']/td/div/div/a");
+		}
+		
+		public static WebElement titleModalInviteMember() {
+			return commonFunctions.getElement(constant.How.XPATH, "//h3[@id='ModalHeader-Title']");
+		}
+		
+		public static WebElement btCancelModalInvite() {
+			return commonFunctions.getElement(constant.How.XPATH, "//button[text()='Cancel']");
+		}
+		
+		public static WebElement generalMsgText() {
+			return commonFunctions.getElement(constant.How.XPATH, "//div[text()='"+constant.globalVariables.consentGeneralMsg+"']");
+		}
+		
+		public static WebElement privateMsgText() {
+			return commonFunctions.getElement(constant.How.XPATH, "//div[text()='"+constant.globalVariables.consentPrivateMsg+"']");
+		}
+		
+		public static WebElement btInviteTeamMember() {
+			return commonFunctions.getElement(constant.How.XPATH, "//button[text()='+ Invite team members']");
+		}
+		
+		public static WebElement inputFirstName() {
+			return commonFunctions.getElement(constant.How.XPATH, "//input[@placeholder='e.g. John']");
+		}
+		
+		public static WebElement inputLastName() {
+			return commonFunctions.getElement(constant.How.XPATH, "//input[@placeholder='e.g. Smith']");
+		}
+		
+		public static WebElement inputEmail() {
+			return commonFunctions.getElement(constant.How.XPATH, "//input[@placeholder='e.g. john.smith@newco.com']");
+		}
+		
+		public static WebElement btInvite() {
+			return commonFunctions.getElement(constant.How.XPATH, "//button[text()='Invite']");
+		}
+		
+		public static WebElement btApprove() {
+			return commonFunctions.getElement(constant.How.XPATH, "//button[text()='Approve']");
+		}
+		
+		public static WebElement toastApproved() {
+			return commonFunctions.getElement(constant.How.XPATH, "//span[@class='fw7'][text()='Request approved']");
+		}
+		
+		public static WebElement labelApproved() {
+			return commonFunctions.getElement(constant.How.XPATH, "//div[text()='Approved']");
+		}
+		
+		public static WebElement btDiableFinishSharing() {
+			return commonFunctions.getElement(constant.How.XPATH, "//button[@disabled=''][text()='Finish signing and share']");
+		}
+		
+		public static WebElement btFinishSigningSharing() {
+			return commonFunctions.getElement(constant.How.XPATH, "//button[text()='Finish signing and share']");
+		}
+		
+		public static WebElement btUndoApproval() {
+			return commonFunctions.getElement(constant.How.XPATH, "//button[text()='Undo approval']");
+		}
+		
+		public static WebElement btSendMsgTo() {
+			return commonFunctions.getElement(constant.How.XPATH, "//button[text()='Send message to']");
+		}
+		
+		public static WebElement btEsign() {
+			return commonFunctions.getElement(constant.How.XPATH, "//button[text()='E-sign']");
+		}
+		
+		public static WebElement btFinishSigning() {
+			return commonFunctions.getElement(constant.How.XPATH, "//button[text()='Finish signing']");
+		}
+		
+		public static WebElement wellMsg() {
+			return commonFunctions.getElement(constant.How.XPATH, "/div[text()='Congratulations! The request is now fully approved and signed! We will notify you when new requests come in']");
+		}
+		
+		public static WebElement labelDocSigned() {
+			return commonFunctions.getElement(constant.How.XPATH, "//div[text()='Document signed']");
+		}
+		
+		public static WebElement labelSignedStatus() {
+			return commonFunctions.getElement(constant.How.XPATH, "//div[text()='Signed']");
+		}
+		
+		
+		
+	}
+	
+	
+	public static void createRquest(String requestName, String requestType, Integer selectedDay, boolean isFirstUsage) throws AWTException {
+
 		linkCreateNewRequest().click();
 		commonFunctions.waitUntilElementVisible(stepperCreate());
 		inputRequestName().sendKeys(requestName);
@@ -154,29 +265,39 @@ public class Board_Consent {
 		assertEquals(datePickerInputHasValue().getAttribute("value"), selectedDate);
 		
 		btBrowserFile().click();
-		String fileName = "upload_example_doc.docx";
+		String fileName = constant.globalVariables.uploadConsentFileName;
 		commonFunctions.uploadFile(fileName);
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//span[@class='ml2'][text()='"+fileName+"']").isDisplayed(), true);
 		
 		checkboxSignature().click();
 		btNext().click();
 		commonFunctions.waitUntilElementVisible(headerAssignBM());
-		inputName().sendKeys("Test Board Member");
-		inputEmail().sendKeys("qaanduin+boardmember@gmail.com");
+		
+		if(isFirstUsage) {
+			inputName().sendKeys("Test Board Member");
+			inputEmail().sendKeys(constant.globalVariables.testBMuser);
+		} else {
+			assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[@class='ml2']/div[text()='"+constant.globalVariables.testBMuser+"']").isDisplayed(), true);
+			assertEquals(btRemoveAddedMember().isDisplayed(), true);
+			btRemoveAddedMember().click();
+			assertEquals(commonFunctions.getElement(constant.How.XPATH, "//h3/div[text()='Remove this board member?']").isDisplayed(), true);
+			commonFunctions.getElement(constant.How.XPATH, "//button[text()='Cancel']").click();
+		}
+		
 		btNext().click();
 		commonFunctions.waitUntilElementVisible(headerGeneralMsg());
-		txtareaGeneralMsg().sendKeys("Genreal message here");
-		txtareaPrivateMsg().sendKeys("Private message here");
-		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//span[@class='ml2'][text()='"+fileName+"']").isDisplayed(), true);
-		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div/span[text()='Signature required']").isDisplayed(), true);
+		txtareaGeneralMsg().sendKeys(constant.globalVariables.consentGeneralMsg);
+		txtareaPrivateMsg().sendKeys(constant.globalVariables.consentPrivateMsg);
+		assertEquals(attachedDocName(fileName).isDisplayed(), true);
+		assertEquals(labelSignatureRequired().isDisplayed(), true);
 		btSendRequest().click();
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//h3[text()='All set! Your request has been sent.']").isDisplayed(), true);
 		
 		commonFunctions.waitUntilElementClickAble(btTrackApprovalStatus());
 		btTrackApprovalStatus().click();
 		
-		commonFunctions.waitUntilElementVisible(commonFunctions.getElement(constant.How.XPATH, "//h3[text()='Employee Option Pool']"));
-		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//span[text()='Test Board Member']").isDisplayed(),true);
+		commonFunctions.waitUntilElementVisible(commonFunctions.getElement(constant.How.XPATH, "//h3[text()='"+requestName+"']"));
+		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//span[text()='QA BM']").isDisplayed(),true);
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[text()='Request sent']").isDisplayed(),true);
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[text()='Pending']").isDisplayed(),true);
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div/span[text()='"+fileName+"']").isDisplayed(),true);
@@ -187,13 +308,9 @@ public class Board_Consent {
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//td[text()='"+selectedDate+"']").isDisplayed(), true);
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[text()='< 1 day']").isDisplayed(), true);
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//span[text()='Request sent']").isDisplayed(), true);
-		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[text()='QA Company']").isDisplayed(), true);
+		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[text()='Minh Company']").isDisplayed(), true);
 		assertEquals(commonFunctions.getElement(constant.How.LINKTEXT, "View detail").isEnabled(), true);
-		
-		
-	}
-	
-	
-	
+				
+	}	
 	
 }

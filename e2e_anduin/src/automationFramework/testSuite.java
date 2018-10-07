@@ -2,14 +2,17 @@ package automationFramework;
 
 import java.awt.AWTException;
 
+
+
+
 public class testSuite {
-	public static void main(String[] args) throws AWTException {
+	public static void main() throws AWTException {
 //		createOrg.Execute(true, "Lead Investor");
 //		createOrg.Execute(true,"Company");
 //		entitySmokeTest.Execute("Investor");
 //		startupPortalSmokeTest.Execute(false);
-		dilutionCalculator.Execute();
-//		createBoardConsent.Execute();
+//		dilutionCalculator.Execute();
+		createBoardConsent.Execute(false);
 //		createTransaction.Execute();
 //		inviteParticipantToTransaction.Execute();
 
