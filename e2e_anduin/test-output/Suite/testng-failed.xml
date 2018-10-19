@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Failed suite [Suite]">
+  <test thread-count="5" name="testng_all(failed)">
+    <classes>
+      <class name="automationFramework.inviteParticipantToTransaction">
+        <methods>
+          <include name="testInviteParticipantsCompanySide"/>
+          <include name="beforeMethod"/>
+          <include name="testInviteParticipantsInvestorSide"/>
+          <include name="afterMethod"/>
+        </methods>
+      </class> <!-- automationFramework.inviteParticipantToTransaction -->
+      <class name="automationFramework.dilutionCalculator">
+        <methods>
+          <include name="testDilutionCalculator"/>
+          <include name="beforeMethod"/>
+          <include name="afterMethod"/>
+        </methods>
+      </class> <!-- automationFramework.dilutionCalculator -->
+      <class name="automationFramework.startupPortalSmokeTest">
+        <methods>
+          <include name="exectPortalSmokeTest"/>
+          <include name="beforeMethod"/>
+          <include name="afterMethod"/>
+        </methods>
+      </class> <!-- automationFramework.startupPortalSmokeTest -->
+      <class name="automationFramework.smokeTestEntity">
+        <methods>
+          <include name="beforeMethod"/>
+          <include name="smokeTestLFirmOrg"/>
+          <include name="afterMethod"/>
+        </methods>
+      </class> <!-- automationFramework.smokeTestEntity -->
+    </classes>
+  </test> <!-- testng_all(failed) -->
+</suite> <!-- Failed suite [Suite] -->

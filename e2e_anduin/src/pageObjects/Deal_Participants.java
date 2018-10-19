@@ -2,6 +2,8 @@ package pageObjects;
 
 
 
+import static org.testng.Assert.assertEquals;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -10,11 +12,19 @@ import utilities.commonFunctions;
 import utilities.constant;
 
 public class Deal_Participants {
-	public static WebElement btInviteInvestorSide() {
+	public static WebElement btInviteInvestorSide_SameSide() {
 		return commonFunctions.getElement(constant.How.XPATH, "//div[@class='mr3'][1]/button/div[text()='Invite Investor Side']");
 	}
 	
-	public static WebElement btInviteCompanySide() {
+	public static WebElement btInviteInvestorSide_OposideSide() {
+		return commonFunctions.getElement(constant.How.XPATH, "//div[@class='mr3'][2]/button/div[text()='Invite Investor Side']");
+	}
+	
+	public static WebElement btInviteCompanySide_SameSide() {
+		return commonFunctions.getElement(constant.How.XPATH, "//div[@class='mr3'][1]/button/div[text()='Invite Company Side']");
+	}
+	
+	public static WebElement btInviteCompanySide_OposideSide() {
 		return commonFunctions.getElement(constant.How.XPATH, "//div[@class='mr3'][2]/button/div[text()='Invite Company Side']");
 	}
 	
@@ -100,14 +110,37 @@ public class Deal_Participants {
 		Assert.assertEquals(eleVerifiedEmail.isDisplayed(), true);
 	}
 	
-	public static void inviteParticipant(String sideName, String partyName, String legalName, String email, String userType, String optionalMsg) {
-		if(sideName == "Investor") {
-			btInviteInvestorSide().click();
-			commonFunctions.waitUntilElementVisible(inviteInvestorSideModalTitle());
+	public static void inviteParticipant(String sideIsInviting,
+										 String sideName, 
+										 String partyName, 
+										 String legalName, 
+										 String email, 
+										 String fullName, 
+										 String userType) {
+		
+		
+		if(sideIsInviting == "Investor") {
+			if(sideName == "Investor" || sideName == "Investor Law Firm") {
+				commonFunctions.waitUntilElementVisible(btInviteInvestorSide_SameSide());
+				btInviteInvestorSide_SameSide().click();
+				commonFunctions.waitUntilElementVisible(inviteInvestorSideModalTitle());
+			} else {
+				commonFunctions.waitUntilElementVisible(btInviteCompanySide_OposideSide());
+				btInviteCompanySide_OposideSide().click();
+				commonFunctions.waitUntilElementVisible(inviteCompanySideModalTitle());
+			}
 		} else {
-			btInviteCompanySide().click();
-			commonFunctions.waitUntilElementVisible(inviteCompanySideModalTitle());
+			if(sideName == "Company" || sideName == "Company Law Firm") {
+				commonFunctions.waitUntilElementVisible(btInviteCompanySide_SameSide());
+				btInviteCompanySide_SameSide().click();
+				commonFunctions.waitUntilElementVisible(inviteCompanySideModalTitle());
+			} else {
+				commonFunctions.waitUntilElementVisible(btInviteInvestorSide_OposideSide());
+				btInviteInvestorSide_OposideSide().click();
+				commonFunctions.waitUntilElementVisible(inviteInvestorSideModalTitle());
+			}
 		}
+		
 		selectPartyToInvite(partyName);
 		commonFunctions.waitUntilElementVisible(addNewParticipantTitle(legalName));
 		
@@ -118,9 +151,10 @@ public class Deal_Participants {
 		}
 		
 		inputEmail().sendKeys(email);
-		inputMessage().sendKeys(optionalMsg);
+		inputMessage().sendKeys("Let's join with us");
 		btAddParticipant().click();
-		verifyPendingUser(partyName, email);
+		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//h5[text()='"+fullName+"']").isDisplayed(), true);
+		verifyPendingUser(partyName, email.trim());
 		
 	}
 	

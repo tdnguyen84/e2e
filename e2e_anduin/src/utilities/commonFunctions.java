@@ -1,7 +1,11 @@
 package utilities;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -11,6 +15,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.sun.jmx.snmp.Timestamp;
 
+import email.EmailMessage;
+import email.EmailUtil;
 import pageObjects.Board_Consent;
 import pageObjects.Login;
 
@@ -257,6 +263,16 @@ public class commonFunctions {
 		return String.valueOf(timestamp.getDateTime());
 	}
 	
+	public static void switchNewTab() {
+		Set<String> handles = setup._webdriver.getWindowHandles();
+	    String currentHandle = setup._webdriver.getWindowHandle();
+	    for (String handle : handles) {
+	    	if (!handle .equals(currentHandle)){
+	    		setup._webdriver.switchTo().window(handle);
+		    }
+	    }
+	}
+	
 	public static void logOut(boolean isDirectly) {
 		if(isDirectly) {
 			String logoutURL = setup._testsite + "/#/logout";
@@ -265,5 +281,38 @@ public class commonFunctions {
 			Login.profileAvatar().click();
 			commonFunctions.getElement(constant.How.XPATH, "//span[text()='Log out']").click();
 		}
+	}
+	
+	public static String getAnduinLiteDealAddress(String trxnID) {
+		String inboxUrl = setup._testsite +  "/#/primary/email/" + trxnID;
+		gotoUrl(inboxUrl);
+		waitUntilElementVisible(getElement(constant.How.XPATH, "//div[contains(text(),'Welcome to your inbox for')]"));
+		WebElement anduinLiteAddress = getElement(constant.How.XPATH, "//span[contains(text(), '"+ANDUIN_LITE_EMAIL()+"')]");
+		return anduinLiteAddress.getText();
+	}
+	
+	public static String ANDUIN_LITE_EMAIL() {
+		if(setup._testsite.contains("canary")) {
+			return "@canary.anduin.email";
+		}else if(setup._testsite.contains("gondor-internal")){
+			return "@gondor-internal.anduin.email";
+		}else if(setup._testsite.contains(".gonder-server")) {
+			return "@dev.anduin.email";
+		}else {
+			return "@deals.anduintransact.email";
+		}
+	}
+	
+	public static String getInvitationLinkInEmail(String anduinLiteAddress, List<String> recipents) {
+		List<EmailMessage> matchedEmails = EmailUtil.waitForEmail("qaanduin1@gmail.com", "NhatMinh@267", anduinLiteAddress, "Invitation to join Test Anduin Transaction's Note from Test Vy Cap", recipents, null);
+		String contentEmail = matchedEmails.get(0).toString();
+		String startIndex = "style=\"cursor:auto;color:#182026;font-family:Helvetica,Segoe UI,Roboto,Arial,sans-serif;font-size:14px;font-weight:400;line-height:22px;text-align:left;\"><a href=\"";
+		String endIndex = "\"";
+		return StringUtils.substringBetween(contentEmail, startIndex, endIndex);
+	}
+	
+	public static String getTrxnID() {
+		String currentUrl = setup._webdriver.getCurrentUrl();
+		return currentUrl.substring(currentUrl.lastIndexOf("/") + 1);
 	}
 }

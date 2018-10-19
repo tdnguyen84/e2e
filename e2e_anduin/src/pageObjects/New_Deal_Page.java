@@ -10,6 +10,10 @@ public class New_Deal_Page {
 		return commonFunctions.getElement(constant.How.CSSSELECTOR, "input[placeholder='Enter company name']");
 	}
 	
+	public static WebElement inputInvestor() {
+		return commonFunctions.getElement(constant.How.CSSSELECTOR, "input[placeholder='Enter investor name']");
+	}
+	
 	public static WebElement radioBtINote() {
 		return commonFunctions.getElement(constant.How.XPATH, "//label/span[@class='ml2']/span[text()='Note, SAFE, KISS']");
 	}
@@ -66,6 +70,10 @@ public class New_Deal_Page {
 		inputCompany().sendKeys(companyName);
 	}
 	
+	public static void enterInvestorName(String investorName) {
+		inputInvestor().sendKeys(investorName);
+	}
+	
 	public static void selectInvestType(String typeInvestment) {
 		if(typeInvestment == "Note") {
 			radioBtINote().click();
@@ -84,8 +92,13 @@ public class New_Deal_Page {
 		radioLeadInvestor.click();
 	}
 	
-	public static void createNewDeal(String companyName, String investType, String typeTrxn, String isLeadInvestor) {
-		enterCompanyName(companyName);
+	public static void createNewDeal(String yourSide, String investType, String typeTrxn, String isLeadInvestor) {
+		if(yourSide == "Investor") {
+			enterCompanyName(constant.globalVariables.testCompanyName);
+		}else {
+			enterInvestorName(constant.globalVariables.testLegalName);
+		}
+		
 		selectInvestType(investType);
 		selectTypeTrxn(typeTrxn);
 		isLeadInvestor(isLeadInvestor);

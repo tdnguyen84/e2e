@@ -1,4 +1,6 @@
 package pageObjects;
+import static org.testng.Assert.assertEquals;
+
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
@@ -36,6 +38,18 @@ public class Entity_Setup {
 		return commonFunctions.getElement(constant.How.XPATH, "//span[@class='ml2'][text()='Set up my organization']");
 	}
 	
+	public static WebElement investorType() {
+		return commonFunctions.getElement(constant.How.XPATH, "//div/div/p[@class='fw6'][text()='Investor']");
+	}
+	
+	public static WebElement companyType() {
+		return commonFunctions.getElement(constant.How.XPATH, "//div/div/p[@class='fw6'][text()='Company']");
+	}
+	
+	public static WebElement lawfirmType() {
+		return commonFunctions.getElement(constant.How.XPATH, "//div/div/p[@class='fw6'][text()='Law Firm']");
+	}
+	
 	public static void createNewOrg(boolean hasNoExistingOrg) {
 		if(hasNoExistingOrg) {
 			linkSetupNewOrg().click();
@@ -47,14 +61,14 @@ public class Entity_Setup {
 		}
 	}
 	
-	public static void setupOrg(String trxnType, String legalName, String shortName, String domain ) {
+	public static void setupOrg(String orgType, String legalName, String shortName, String domain, boolean isInWelcomeModal) {
 		WebElement ttype = null;
-		if(trxnType == "Investor") {
-			ttype = commonFunctions.getElement(constant.How.XPATH, "//div/div/p[@class='fw6'][text()='Investor']");
-		} else if(trxnType == "Law Firm") {
-			ttype = commonFunctions.getElement(constant.How.XPATH, "//div/div/p[@class='fw6'][text()='Law Firm']");
+		if(orgType == "Investor") {
+			ttype = investorType();
+		} else if(orgType == "Law Firm") {
+			ttype = lawfirmType();
 		} else {
-			ttype = commonFunctions.getElement(constant.How.XPATH, "//div/div/p[@class='fw6'][text()='Company']");
+			ttype = companyType();
 		}
 		
 		ttype.click();
@@ -63,13 +77,18 @@ public class Entity_Setup {
 		txtDomain().sendKeys(domain);
 		commonFunctions.jsClick(btCreateOrg());
 		WebElement orgNameTitle = commonFunctions.getElement(constant.How.CSSSELECTOR, "p.fw7.c--white"); 
-		String verifiedName = orgNameTitle.getText();
-		Assert.assertEquals(verifiedName, shortName);
-		
-		if(trxnType != "Company") {
-			Assert.assertEquals(Deals_Dashboard.getTextActiveTab(), "Deals");
-		} else {
-			Assert.assertEquals(Deals_Dashboard.getTextActiveTab(), "Toolkit");
+		if(isInWelcomeModal) {
+			WebElement orgName = Deal_Snapshot.defaultOrgValueDropdown(shortName);
+			commonFunctions.waitUntilElementVisible(orgName);
+			assertEquals(orgName.isDisplayed(), true);
+		}else {
+			String verifiedName = orgNameTitle.getText();
+			Assert.assertEquals(verifiedName, shortName);
+			if(orgType != "Company") {
+				Assert.assertEquals(Deals_Dashboard.getTextActiveTab(), "Deals");
+			} else {
+				Assert.assertEquals(Deals_Dashboard.getTextActiveTab(), "Toolkit");
+			}
 		}
 		
 	}

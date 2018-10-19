@@ -19,7 +19,7 @@ public class Toolkit_DilutionCalculator {
 	}
 	
 	public static WebElement inputTotalShares() {
-		return commonFunctions.getElement(constant.How.XPATH, "//div[span='Fully diluted capitalization']/following-sibling::div/div/div/div/input");
+		return commonFunctions.getElement(constant.How.XPATH, "//div[span='Total outstanding shares']/following-sibling::div/div/div/div/input");
 	}
 	
 	public static WebElement inputFounder() {

@@ -29,15 +29,7 @@ public class Log {
 	 
 		Log.info("XXXXXXXXXXXXXXXXXXXXXXX             "+"-E---N---D-"+"             XXXXXXXXXXXXXXXXXXXXXX");
 	 
-		Log.info("X");
-	 
-		Log.info("X");
-	 
-		Log.info("X");
-	 
-		Log.info("X");
-	 
-		}
+	}
 	 
 		// Need to create these methods, so that they can be called  
 	 

@@ -24,10 +24,32 @@ public class Deals_Dashboard {
 		return commonFunctions.getElement(constant.How.XPATH, "//button[text()='Start a new deal']");
 	}
 	
-	public static WebElement getTrxnLink(String trxnName) {
+	public static WebElement getTrxnLinkInvestorOrg(String trxnName) {
 		
-		return commonFunctions.getElement(constant.How.XPATH, "//span[@class='c--primary-5 underline-hover cursor-pointer'][text()=\""+trxnName+"\"]");
+		return commonFunctions.getElement(constant.How.XPATH, "//div[h4=\""+trxnName+"\"]/div/a/div[text()='Access deal ']");
 	}
+	
+	public static WebElement getTrxnLinkCompanyOrg(String trxnName) {
+		
+		return commonFunctions.getElement(constant.How.XPATH, "//span/button[text()=\""+trxnName+"\"]");
+	}
+	
+	public static WebElement linkSettings() {
+		
+		return commonFunctions.getElement(constant.How.LINKTEXT, "Settings");
+	}
+	
+	public static WebElement linkMyAccount() {
+			
+		return commonFunctions.getElement(constant.How.LINKTEXT, "My Account");
+	}
+	
+	public static WebElement linkEditSignature() {
+		
+		return commonFunctions.getElement(constant.How.LINKTEXT, "Edit signature");
+	}
+	
+	
 	
 
 }

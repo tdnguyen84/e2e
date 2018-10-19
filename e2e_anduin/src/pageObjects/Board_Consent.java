@@ -3,6 +3,8 @@ package pageObjects;
 import static org.testng.Assert.assertEquals;
 
 import java.awt.AWTException;
+import java.rmi.UnknownHostException;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebElement;
 
@@ -11,7 +13,7 @@ import utilities.constant;
 
 public class Board_Consent {
 	public static WebElement helloModalTitle() {
-		return commonFunctions.getElement(constant.How.XPATH, "//div/h3[text()='Hello QA, welcome to Anduin!']");
+		return commonFunctions.getElement(constant.How.XPATH, "//div/h3[text()='Hello QA, welcome to Anduin Board Consent!']");
 	}
 	public static WebElement btInviteMember() {
 		return commonFunctions.getElement(constant.How.XPATH, "//button[text()='Invite team members']");
@@ -151,7 +153,7 @@ public class Board_Consent {
 		}
 		
 		public static WebElement titleModalInviteMember() {
-			return commonFunctions.getElement(constant.How.XPATH, "//h3[@id='ModalHeader-Title']");
+			return commonFunctions.getElement(constant.How.XPATH, "//h3[@data-test-id='ModalHeader-Title']");
 		}
 		
 		public static WebElement btCancelModalInvite() {
@@ -223,7 +225,7 @@ public class Board_Consent {
 		}
 		
 		public static WebElement wellMsg() {
-			return commonFunctions.getElement(constant.How.XPATH, "/div[text()='Congratulations! The request is now fully approved and signed! We will notify you when new requests come in']");
+			return commonFunctions.getElement(constant.How.XPATH, "//div[text()='Congratulations! The request is now fully approved and signed! We will notify you when new requests come in']");
 		}
 		
 		public static WebElement labelDocSigned() {
@@ -234,13 +236,27 @@ public class Board_Consent {
 			return commonFunctions.getElement(constant.How.XPATH, "//div[text()='Signed']");
 		}
 		
+		public static WebElement attachedDocName(String docName) {
+			return commonFunctions.getElement(constant.How.XPATH, "//span[@class='mh2'][text()='"+docName+"']");
+		}
+		
+		public static WebElement labelSignatureRequired() {
+			return commonFunctions.getElement(constant.How.XPATH, "//div[text()='Signature required']");
+		}
+		
 		
 		
 	}
 	
 	
-	public static void createRquest(String requestName, String requestType, Integer selectedDay, boolean isFirstUsage) throws AWTException {
+	public static void createRquest(String requestName, String requestType, Integer selectedDay, boolean isFirstUsage) throws AWTException, InterruptedException {
 
+//		if(isFirstUsage) {
+//			assertEquals(helloModalTitle().isDisplayed(), true);
+//			btInviteMember().click();
+//			assertEquals(modalInivteMember().isDisplayed(), true);
+//			btCancelInviteModal().click();
+//		}
 		linkCreateNewRequest().click();
 		commonFunctions.waitUntilElementVisible(stepperCreate());
 		inputRequestName().sendKeys(requestName);
@@ -297,18 +313,19 @@ public class Board_Consent {
 		btTrackApprovalStatus().click();
 		
 		commonFunctions.waitUntilElementVisible(commonFunctions.getElement(constant.How.XPATH, "//h3[text()='"+requestName+"']"));
-		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//span[text()='QA BM']").isDisplayed(),true);
+		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//span[text()='Test Board Member']").isDisplayed(),true);
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[text()='Request sent']").isDisplayed(),true);
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[text()='Pending']").isDisplayed(),true);
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div/span[text()='"+fileName+"']").isDisplayed(),true);
 		
+		TimeUnit.SECONDS.sleep(2);
 		btEntityName().click();
 		commonFunctions.waitUntilElementVisible(commonFunctions.getElement(constant.How.XPATH, "//h3[text()='Requests for board approval']"));
-		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[text()='"+requestName+"']").isDisplayed(), true);
+		commonFunctions.waitUntilElementVisible(commonFunctions.getElement(constant.How.XPATH, "//div[text()='"+requestName+"']"));
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//td[text()='"+selectedDate+"']").isDisplayed(), true);
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[text()='< 1 day']").isDisplayed(), true);
 		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//span[text()='Request sent']").isDisplayed(), true);
-		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[text()='Minh Company']").isDisplayed(), true);
+		assertEquals(commonFunctions.getElement(constant.How.XPATH, "//div[text()='QA Company']").isDisplayed(), true);
 		assertEquals(commonFunctions.getElement(constant.How.LINKTEXT, "View detail").isEnabled(), true);
 				
 	}	
