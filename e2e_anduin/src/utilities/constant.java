@@ -28,7 +28,7 @@ public class constant {
 		public static final String orgCompanyType = "Company";
 		public static final String orgLFirmType = "Law Firm";
 		public static final String testLegalName = "Test Vy Capitalize";
-		public static final String testShortName = "Test Vy Cap";
+		public static final String testShortName = "Test Vy Cap THIS IS BUG FIX";
 		public static final String testDefaultInvestorLFirm = testShortName + "'s Law Firm";
 		public static final String testDefaultInvestorLFirmOposite = testLegalName + "'s Law Firm";
 		public static final String testDomainName = "protonmail.ch";
